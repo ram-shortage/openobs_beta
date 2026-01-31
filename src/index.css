@@ -1,0 +1,669 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CSS Variables for theming - Obsidian-inspired */
+:root {
+  /* Light theme */
+  --background-primary: #ffffff;
+  --background-secondary: #f6f6f6;
+  --background-modifier-hover: rgba(0, 0, 0, 0.04);
+  --background-modifier-active: rgba(0, 0, 0, 0.08);
+  --background-modifier-border: rgba(0, 0, 0, 0.1);
+
+  --text-normal: #1e1e1e;
+  --text-muted: #666666;
+  --text-faint: #999999;
+  --text-accent: #705dcf;
+
+  --interactive-normal: #f0f0f0;
+  --interactive-hover: #e6e6e6;
+  --interactive-accent: #7c3aed;
+  --interactive-accent-hover: #6d28d9;
+
+  /* Editor */
+  --code-background: #f5f5f5;
+  --code-normal: #1e1e1e;
+  --inline-code-background: rgba(124, 58, 237, 0.1);
+
+  /* Syntax highlighting */
+  --syntax-keyword: #9333ea;
+  --syntax-string: #059669;
+  --syntax-number: #0284c7;
+  --syntax-comment: #9ca3af;
+  --syntax-function: #2563eb;
+}
+
+/* Dark theme */
+.dark {
+  --background-primary: #1e1e1e;
+  --background-secondary: #262626;
+  --background-modifier-hover: rgba(255, 255, 255, 0.06);
+  --background-modifier-active: rgba(255, 255, 255, 0.1);
+  --background-modifier-border: rgba(255, 255, 255, 0.1);
+
+  --text-normal: #dcddde;
+  --text-muted: #999999;
+  --text-faint: #666666;
+  --text-accent: #a78bfa;
+
+  --interactive-normal: #333333;
+  --interactive-hover: #404040;
+  --interactive-accent: #8b5cf6;
+  --interactive-accent-hover: #7c3aed;
+
+  /* Editor */
+  --code-background: #2d2d2d;
+  --code-normal: #dcddde;
+  --inline-code-background: rgba(139, 92, 246, 0.2);
+
+  /* Syntax highlighting */
+  --syntax-keyword: #c084fc;
+  --syntax-string: #34d399;
+  --syntax-number: #38bdf8;
+  --syntax-comment: #6b7280;
+  --syntax-function: #60a5fa;
+}
+
+/* Base styles */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background-color: var(--background-primary);
+  color: var(--text-normal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+}
+
+/* Focus visible styles */
+:focus-visible {
+  outline: 2px solid var(--interactive-accent);
+  outline-offset: 2px;
+}
+
+/* Selection */
+::selection {
+  background-color: var(--interactive-accent);
+  color: white;
+}
+
+/* Scrollbar styles */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--background-modifier-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--text-faint);
+}
+
+/* Hide scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Animation utilities */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-in {
+  animation-duration: 200ms;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+}
+
+.fade-in-0 {
+  animation-name: fadeIn;
+}
+
+.zoom-in-95 {
+  animation-name: scaleIn;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--text-normal);
+}
+
+h1 { font-size: 1.875rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.25rem; }
+h4 { font-size: 1.125rem; }
+h5 { font-size: 1rem; }
+h6 { font-size: 0.875rem; }
+
+/* Links */
+a {
+  color: var(--text-accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Code */
+code {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', Menlo, Monaco,
+    'Courier New', monospace;
+  font-size: 0.875em;
+  background-color: var(--inline-code-background);
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+}
+
+pre {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', Menlo, Monaco,
+    'Courier New', monospace;
+  background-color: var(--code-background);
+  color: var(--code-normal);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  font-size: inherit;
+}
+
+/* Tauri window drag region */
+.titlebar-drag-region {
+  -webkit-app-region: drag;
+}
+
+.titlebar-nodrag {
+  -webkit-app-region: no-drag;
+}
+
+/* Custom checkbox style */
+input[type="checkbox"] {
+  appearance: none;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid var(--background-modifier-border);
+  border-radius: 0.25rem;
+  background-color: var(--background-primary);
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+input[type="checkbox"]:checked {
+  background-color: var(--interactive-accent);
+  border-color: var(--interactive-accent);
+  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+  background-size: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+input[type="checkbox"]:hover {
+  border-color: var(--interactive-accent);
+}
+
+/* Blockquote */
+blockquote {
+  margin: 1rem 0;
+  padding: 0.5rem 1rem;
+  border-left: 3px solid var(--interactive-accent);
+  background-color: var(--background-modifier-hover);
+  color: var(--text-muted);
+}
+
+/* Horizontal rule */
+hr {
+  border: none;
+  border-top: 1px solid var(--background-modifier-border);
+  margin: 1.5rem 0;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+th, td {
+  padding: 0.5rem;
+  border: 1px solid var(--background-modifier-border);
+  text-align: left;
+}
+
+th {
+  background-color: var(--background-secondary);
+  font-weight: 600;
+}
+
+tr:hover {
+  background-color: var(--background-modifier-hover);
+}
+
+/* Lists */
+ul, ol {
+  padding-left: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+li {
+  margin: 0.25rem 0;
+}
+
+/* Task lists */
+ul.task-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+ul.task-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+/* Image styling */
+img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.25rem;
+}
+
+/* Placeholder content for empty states */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 2rem;
+}
+
+.empty-state-icon {
+  width: 4rem;
+  height: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+/* Markdown editor specific styles */
+.markdown-preview {
+  padding: 1.5rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.markdown-preview p {
+  margin: 0.75rem 0;
+}
+
+.markdown-preview h1 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.markdown-preview h2 {
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.markdown-preview h3,
+.markdown-preview h4,
+.markdown-preview h5,
+.markdown-preview h6 {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Wiki-style internal links */
+.internal-link {
+  color: var(--text-accent);
+  cursor: pointer;
+}
+
+.internal-link:hover {
+  text-decoration: underline;
+}
+
+.internal-link.unresolved {
+  opacity: 0.6;
+}
+
+/* Tags */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.5rem;
+  background-color: var(--interactive-accent);
+  color: white;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* Callouts / Admonitions */
+.callout {
+  margin: 1rem 0;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border-left: 4px solid;
+}
+
+.callout.callout-info {
+  background-color: rgba(59, 130, 246, 0.1);
+  border-color: #3b82f6;
+}
+
+.callout.callout-warning {
+  background-color: rgba(245, 158, 11, 0.1);
+  border-color: #f59e0b;
+}
+
+.callout.callout-danger {
+  background-color: rgba(239, 68, 68, 0.1);
+  border-color: #ef4444;
+}
+
+.callout.callout-success {
+  background-color: rgba(34, 197, 94, 0.1);
+  border-color: #22c55e;
+}
+
+.callout-title {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+/* CodeMirror / Editor styles */
+.source-editor .cm-editor {
+  height: 100%;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', Menlo, Monaco, Consolas, monospace;
+  font-size: 14px;
+}
+
+.source-editor .cm-scroller {
+  overflow: auto;
+  font-family: inherit;
+}
+
+.source-editor .cm-content {
+  padding: 16px 8px;
+}
+
+.source-editor .cm-line {
+  padding: 0 8px;
+}
+
+/* Wikilinks in editor */
+.cm-wikilink {
+  color: var(--text-accent);
+  cursor: pointer;
+}
+
+.cm-wikilink:hover {
+  text-decoration: underline;
+}
+
+.cm-wikilink-bracket {
+  color: var(--text-faint);
+  opacity: 0.7;
+}
+
+/* Tags in editor */
+.cm-tag {
+  color: var(--text-accent);
+  background-color: rgba(139, 92, 246, 0.15);
+  border-radius: 3px;
+  padding: 0 2px;
+}
+
+.cm-tag-hash {
+  color: var(--text-accent);
+  opacity: 0.7;
+}
+
+/* Additional variables for editor */
+:root {
+  --font-text: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-monospace: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', Menlo, Monaco, Consolas, monospace;
+  --text-selection: rgba(124, 58, 237, 0.3);
+  --background-modifier-code: rgba(124, 58, 237, 0.1);
+  --background-modifier-tag: rgba(124, 58, 237, 0.15);
+}
+
+.dark {
+  --text-selection: rgba(139, 92, 246, 0.4);
+  --background-modifier-code: rgba(139, 92, 246, 0.2);
+  --background-modifier-tag: rgba(139, 92, 246, 0.2);
+}
+
+/* Live preview styles */
+.live-preview .ProseMirror {
+  padding: 16px;
+  outline: none;
+  min-height: 100%;
+}
+
+.live-preview .ProseMirror:focus {
+  outline: none;
+}
+
+.live-preview .wikilink {
+  color: var(--text-accent);
+  cursor: pointer;
+}
+
+.live-preview .wikilink:hover {
+  text-decoration: underline;
+}
+
+.live-preview .tag {
+  color: var(--text-accent);
+  background-color: var(--background-modifier-tag);
+  border-radius: 3px;
+  padding: 0 4px;
+}
+
+/* Checkbox list items in live preview */
+.live-preview li[data-type="checkbox"] {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  list-style: none;
+}
+
+.live-preview li[data-type="checkbox"].checked .checkbox-content {
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+.live-preview ul.checkbox-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+/* Reading view specific styles */
+.reading-view {
+  --tw-prose-headings: var(--text-normal);
+  --tw-prose-body: var(--text-normal);
+  --tw-prose-links: var(--text-accent);
+  --tw-prose-code: var(--text-accent);
+  --tw-prose-quotes: var(--text-muted);
+}
+
+.reading-view .wikilink {
+  color: var(--text-accent);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.reading-view .wikilink:hover {
+  text-decoration: underline;
+}
+
+.reading-view .tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  background-color: var(--background-modifier-tag);
+  color: var(--text-accent);
+  border-radius: 12px;
+  font-size: 0.85em;
+  cursor: pointer;
+}
+
+.reading-view .tag:hover {
+  background-color: var(--interactive-accent);
+  color: white;
+}
+
+.reading-view .task-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.reading-view .task-list-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.reading-view .task-list-item input[type="checkbox"] {
+  margin-top: 4px;
+}
+
+/* Code block styles in reading view */
+.reading-view pre.code-block {
+  position: relative;
+  padding-top: 2.5rem;
+}
+
+.reading-view pre.code-block::before {
+  content: attr(class);
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  color: var(--text-faint);
+  background-color: var(--background-modifier-hover);
+  border-bottom-left-radius: 4px;
+}
+
+/* Callout styles in reading view */
+.reading-view .callout {
+  margin: 1rem 0;
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid;
+  background-color: var(--background-secondary);
+}
+
+.reading-view .callout-note,
+.reading-view .callout-info {
+  border-color: #3b82f6;
+}
+
+.reading-view .callout-tip,
+.reading-view .callout-success {
+  border-color: #22c55e;
+}
+
+.reading-view .callout-warning,
+.reading-view .callout-caution {
+  border-color: #f59e0b;
+}
+
+.reading-view .callout-danger,
+.reading-view .callout-error {
+  border-color: #ef4444;
+}
+
+.reading-view .callout-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.reading-view .callout-content {
+  color: var(--text-muted);
+}
+
+/* KaTeX math styling */
+.reading-view .katex {
+  font-size: 1.1em;
+}
+
+.reading-view .katex-display {
+  margin: 1rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
